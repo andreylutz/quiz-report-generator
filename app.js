@@ -23,8 +23,22 @@ function selectAttempts(filter) {
 }
 
 function renderAttempts(attempts) {
-  // TODO: соберите строки списка через forEach и строковый аккумулятор.
-  // Перед вставкой имени вызовите готовую escapeHtml().
+  const resultList = document.querySelector('#result-list')
+  const resultCount = document.querySelector('#result-count')
+  let attemptsMarkup = ''
+
+  attempts.forEach((attempt) => {
+    const status = attempt.passed ? 'Порог пройден' : 'Порог не пройден'
+
+    attemptsMarkup += `
+      <li class="result-item">
+        <span class="result-name">${escapeHtml(attempt.name)}</span>
+        <span>${attempt.score} из ${attempt.questionCount} (${attempt.percentage}%) — ${status}</span>
+      </li>`
+  })
+
+  resultList.innerHTML = attemptsMarkup
+  resultCount.innerHTML = `Показано: ${attempts.length} из ${window.reportData.attempts.length}`
 }
 
 function startFilter() {
