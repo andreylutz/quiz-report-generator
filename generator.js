@@ -128,12 +128,38 @@ function fail(message) {
 }
 
 async function main() {
-  // TODO: получите путь из process.argv[2].
-  // TODO: удалите старый отчёт, затем прочитайте файл через await и 'utf8'.
-  // TODO: отдельно обработайте ENOENT, ошибку JSON.parse() и неверную структуру.
-  // TODO: рассчитайте данные, создайте HTML и запишите report.html через await.
-  // TODO: напечатайте сводку только после успешной записи.
-  fail('Заготовка: завершите TODO в generator.js')
+  const inputPath = process.argv[2]
+
+  await removePreviousReport()
+
+  let fileContent
+
+  try {
+    fileContent = await readFile(inputPath, 'utf8')
+  } catch (error) {
+    fail(`Ошибка чтения файла: ${error.code}`)
+    return
+  }
+
+  let data
+
+  try {
+    data = JSON.parse(fileContent)
+  } catch {
+    fail('Ошибка данных')
+    return
+  }
+
+  if (!validateQuizData(data)) {
+    fail('Ошибка структуры данных')
+    return
+  }
+
+  const report = calculateReport(data)
+  const html = createReportHtml(report)
+
+  await writeFile(outputPath, html, 'utf8')
+  printSummary(report)
 }
 
 main()
