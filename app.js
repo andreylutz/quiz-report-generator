@@ -42,10 +42,17 @@ function renderAttempts(attempts) {
 }
 
 function startFilter() {
-  // TODO: найдите форму, select, счётчик и список через querySelector().
-  // TODO: подпишитесь на submit через addEventListener().
-  // В обработчике вызовите preventDefault(), прочитайте value,
-  // выберите попытки и замените innerHTML счётчика и списка.
+  const form = document.querySelector('#filter-form')
+  const select = form.querySelector('select')
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+
+    const filter = select.value
+    const attempts = selectAttempts(filter)
+
+    renderAttempts(attempts)
+  })
 }
 
 startFilter()
