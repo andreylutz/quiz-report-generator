@@ -103,7 +103,11 @@ function createReportHtml(report) {
 }
 
 function printSummary(report) {
-  // TODO: напечатайте пять строк контрольной сводки без отладочного вывода.
+  console.log(`Участников: ${report.participantCount}`)
+  console.log(`Средний результат: ${report.averagePercentage}%`)
+  console.log(`Лучший результат: ${report.best.name} — ${report.best.score} из ${report.questionCount} (${report.best.percentage}%)`)
+  console.log(`Порог пройден: ${report.passedCount} из ${report.participantCount}`)
+  console.log(`Отчёт: ${outputPath.slice(2)}`)
 }
 
 // Готовая защитная механика. Вызовите её до чтения входного файла.

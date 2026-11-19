@@ -55,7 +55,33 @@ export function calculateAttempt(attempt, correctAnswers) {
 }
 
 export function calculateReport(data) {
-  // TODO: рассчитайте все попытки и сводку.
-  // При равном score оставьте первого лучшего участника.
-  return null
+  const questionCount = data.correctAnswers.length
+  const attempts = data.attempts.map((attempt) => calculateAttempt(attempt, data.correctAnswers))
+  const participantCount = attempts.length
+  let totalPercentage = 0
+  let passedCount = 0
+  let best = attempts[0]
+
+  attempts.forEach((attempt) => {
+    totalPercentage += attempt.percentage
+
+    if (attempt.passed) {
+      passedCount += 1
+    }
+
+    if (attempt.score > best.score) {
+      best = attempt
+    }
+  })
+
+  return {
+    quizTitle: data.quizTitle.trim(),
+    questionCount,
+    participantCount,
+    averagePercentage: Math.round(totalPercentage / participantCount),
+    passedCount,
+    threshold: PASSING_PERCENTAGE,
+    best,
+    attempts,
+  }
 }
