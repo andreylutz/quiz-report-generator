@@ -9,8 +9,17 @@ function escapeHtml(value) {
 }
 
 function selectAttempts(filter) {
-  // TODO: верните все попытки, прошедшие или не прошедшие порог.
-  return []
+  const attempts = window.reportData.attempts
+
+  if (filter === 'passed') {
+    return attempts.filter((attempt) => attempt.passed === true)
+  }
+
+  if (filter === 'failed') {
+    return attempts.filter((attempt) => attempt.passed === false)
+  }
+
+  return attempts
 }
 
 function renderAttempts(attempts) {
